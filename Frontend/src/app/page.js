@@ -7,36 +7,62 @@ import FavoritesPage from '../components/pages/FavoritesPage'
 import ScanPage from '../components/pages/ScanPage'
 import RecentPage from '../components/pages/RecentPage'
 import SettingsPage from '../components/pages/SettingsPage'
+import ProductPage from '../components/pages/ProductPage'
 
 export default function Home() {
   const [activeTab, setActiveTab] = useState('home')
+  const [currentView, setCurrentView] = useState('main') // 'main' or 'product'
+  const [scannedProduct, setScannedProduct] = useState(null)
+
+  const handleProductScanned = (product = null) => {
+    setScannedProduct(product)
+    setCurrentView('product')
+  }
+
+  const handleBackToMain = () => {
+    setCurrentView('main')
+    setScannedProduct(null)
+  }
 
   const renderPage = () => {
     switch (activeTab) {
       case 'home':
-        return <HomePage />
+        return <HomePage onProductScanned={handleProductScanned} />
       case 'favorites':
         return <FavoritesPage />
       case 'scan':
-        return <ScanPage />
+        return <ScanPage onProductScanned={handleProductScanned} />
       case 'recent':
-        return <RecentPage />
+        return <RecentPage onProductScanned={handleProductScanned} />
       case 'settings':
         return <SettingsPage />
       default:
-        return <HomePage />
+        return <HomePage onProductScanned={handleProductScanned} />
     }
   }
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 to-green-50">
-      {/* Page Content */}
-      <main className="pt-safe-area">
-        {renderPage()}
-      </main>
+      {currentView === 'product' ? (
+        <>
+          <ProductPage 
+            product={scannedProduct} 
+            onBack={handleBackToMain} 
+          />
+          {/* Bottom Navigation - Always visible */}
+          <BottomNavigation activeTab={activeTab} onTabChange={setActiveTab} />
+        </>
+      ) : (
+        <>
+          {/* Page Content */}
+          <main className="pt-safe-area">
+            {renderPage()}
+          </main>
 
-      {/* Bottom Navigation */}
-      <BottomNavigation activeTab={activeTab} onTabChange={setActiveTab} />
+          {/* Bottom Navigation */}
+          <BottomNavigation activeTab={activeTab} onTabChange={setActiveTab} />
+        </>
+      )}
     </div>
   )
 }

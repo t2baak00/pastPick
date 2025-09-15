@@ -1,6 +1,6 @@
 import { Clock, Shield, AlertTriangle, CheckCircle } from 'lucide-react'
 
-export default function RecentPage() {
+export default function RecentPage({ onProductScanned }) {
   const recentScans = [
     {
       id: 1,
@@ -95,7 +95,10 @@ export default function RecentPage() {
                   )}
                 </div>
                 
-                <button className="text-blue-600 text-sm font-medium">
+                <button 
+                  onClick={() => onProductScanned && onProductScanned()}
+                  className="text-blue-600 text-sm font-medium"
+                >
                   View Details
                 </button>
               </div>

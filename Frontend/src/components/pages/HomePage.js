@@ -1,6 +1,6 @@
 import { Camera, Search, Shield, Sparkles, CheckCircle, TrendingUp } from 'lucide-react'
 
-export default function HomePage() {
+export default function HomePage({ onProductScanned }) {
   return (
     <div className="pb-20 px-4 py-6">
       {/* Header */}
@@ -32,7 +32,10 @@ export default function HomePage() {
 
       {/* Quick Actions */}
       <div className="space-y-3 mb-6">
-        <button className="w-full bg-gradient-to-r from-blue-600 to-blue-700 text-white py-3 px-4 rounded-lg flex items-center justify-center space-x-3 shadow-md">
+        <button 
+          onClick={() => onProductScanned && onProductScanned()}
+          className="w-full bg-gradient-to-r from-blue-600 to-blue-700 text-white py-3 px-4 rounded-lg flex items-center justify-center space-x-3 shadow-md"
+        >
           <Camera size={20} />
           <span className="font-semibold">Quick Scan</span>
         </button>
