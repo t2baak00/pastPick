@@ -161,7 +161,7 @@ export default function ScanPage({ onProductScanned }) {
               <ul className="text-xs text-blue-800 space-y-1">
                 <li>• Separate ingredients with commas or new lines</li>
                 <li>• Include exact names as written on packaging</li>
-                <li>• Don't worry about spelling - we'll match similar names</li>
+                <li>• Do not worry about spelling - we will match similar names</li>
               </ul>
             </div>
           </div>
