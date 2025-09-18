@@ -1,6 +1,6 @@
 import { Home, Heart, Scan, Clock, Settings } from 'lucide-react'
 
-export default function BottomNavigation({ activeTab, onTabChange }) {
+export default function BottomNavigation({ activeTab, onTabChange, onStartCamera }) {
   const tabs = [
     { id: 'home', label: 'Home', icon: Home },
     { id: 'favorites', label: 'Favorites', icon: Heart },
@@ -20,7 +20,13 @@ export default function BottomNavigation({ activeTab, onTabChange }) {
           return (
             <button
               key={tab.id}
-              onClick={() => onTabChange(tab.id)}
+              onClick={() => {
+                if (isScan && onStartCamera) {
+                  onStartCamera()
+                } else {
+                  onTabChange(tab.id)
+                }
+              }}
               className={`flex flex-col items-center justify-center min-w-0 flex-1 py-2 px-1 transition-all duration-200 ${
                 isScan 
                   ? 'transform -translate-y-2' 
