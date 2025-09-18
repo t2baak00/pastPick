@@ -1,12 +1,15 @@
 import { Home, Heart, Scan, Clock, Settings } from 'lucide-react'
+import { useLanguage } from '../contexts/LanguageContext'
 
 export default function BottomNavigation({ activeTab, onTabChange, onStartCamera }) {
+  const { t } = useLanguage()
+  
   const tabs = [
-    { id: 'home', label: 'Home', icon: Home },
-    { id: 'favorites', label: 'Favorites', icon: Heart },
-    { id: 'scan', label: 'Scan', icon: Scan },
-    { id: 'recent', label: 'Recent', icon: Clock },
-    { id: 'settings', label: 'Settings', icon: Settings },
+    { id: 'home', label: t('home'), icon: Home },
+    { id: 'favorites', label: t('favorites'), icon: Heart },
+    { id: 'scan', label: t('scan'), icon: Scan },
+    { id: 'recent', label: t('recent'), icon: Clock },
+    { id: 'settings', label: t('settings'), icon: Settings },
   ]
 
   return (
