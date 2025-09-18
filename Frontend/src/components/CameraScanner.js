@@ -1,39 +1,20 @@
 'use client'
 
-import { useRef, useState, useEffect } from 'react'
-import { X, Camera, Image, Smartphone } from 'lucide-react'
+import { useRef, useState } from 'react'
+import { X, Camera, Image } from 'lucide-react'
 
 export default function CameraScanner({ onClose, onCapture }) {
-  const cameraInputRef = useRef(null)
-  const galleryInputRef = useRef(null)
+  const fileInputRef = useRef(null)
   const [capturedImage, setCapturedImage] = useState(null)
   const [isAnalyzing, setIsAnalyzing] = useState(false)
-  const [isMobile, setIsMobile] = useState(false)
 
-  // Detect if user is on mobile
-  useEffect(() => {
-    const userAgent = navigator.userAgent.toLowerCase()
-    const mobile = /android|webos|iphone|ipad|ipod|blackberry|iemobile|opera mini/.test(userAgent)
-    setIsMobile(mobile)
-  }, [])
-
-  // Open camera (different approaches for different devices)
+  // Trigger native camera
   const openCamera = () => {
-    if (cameraInputRef.current) {
-      // Force camera on mobile devices
-      if (isMobile) {
-        cameraInputRef.current.click()
-      } else {
-        // For desktop, show a message
-        alert('Camera access is best on mobile devices. Please use "Choose from Gallery" on desktop.')
-      }
-    }
-  }
-
-  // Open gallery
-  const openGallery = () => {
-    if (galleryInputRef.current) {
-      galleryInputRef.current.click()
+    // Ensure the input has the correct attributes for camera
+    if (fileInputRef.current) {
+      fileInputRef.current.setAttribute('capture', 'environment')
+      fileInputRef.current.setAttribute('accept', 'image/*')
+      fileInputRef.current.click()
     }
   }
 
@@ -47,15 +28,13 @@ export default function CameraScanner({ onClose, onCapture }) {
       }
       reader.readAsDataURL(file)
     }
-    
-    // Reset input
-    event.target.value = ''
   }
 
   // Analyze image
   const analyzeImage = async () => {
     setIsAnalyzing(true)
     
+    // Simulate analysis
     setTimeout(() => {
       setIsAnalyzing(false)
       onCapture && onCapture(capturedImage)
@@ -65,6 +44,9 @@ export default function CameraScanner({ onClose, onCapture }) {
   // Retake photo
   const retakePhoto = () => {
     setCapturedImage(null)
+    if (fileInputRef.current) {
+      fileInputRef.current.value = ''
+    }
   }
 
   return (
@@ -83,21 +65,12 @@ export default function CameraScanner({ onClose, onCapture }) {
         </div>
       </div>
 
-      {/* Camera input - specifically for camera */}
+      {/* Hidden file input for camera */}
       <input
-        ref={cameraInputRef}
+        ref={fileInputRef}
         type="file"
         accept="image/*"
         capture="environment"
-        onChange={handleFileSelect}
-        style={{ display: 'none' }}
-      />
-
-      {/* Gallery input - specifically for gallery */}
-      <input
-        ref={galleryInputRef}
-        type="file"
-        accept="image/*"
         onChange={handleFileSelect}
         style={{ display: 'none' }}
       />
@@ -125,70 +98,45 @@ export default function CameraScanner({ onClose, onCapture }) {
                 disabled={isAnalyzing}
                 className="flex-1 py-3 px-4 bg-blue-600 text-white rounded-lg font-medium disabled:opacity-50"
               >
-                {isAnalyzing ? (
-                  <div className="flex items-center justify-center space-x-2">
-                    <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white" />
-                    <span>Analyzing...</span>
-                  </div>
-                ) : (
-                  'Analyze'
-                )}
+                {isAnalyzing ? 'Analyzing...' : 'Analyze'}
               </button>
             </div>
           </div>
         ) : (
-          // Show camera options
-          <div className="text-center w-full max-w-sm">
+          // Show camera button
+          <div className="text-center">
             <div className="mb-8">
               <Camera className="mx-auto text-white mb-4" size={64} />
               <h2 className="text-xl font-semibold text-white mb-2">
                 Scan Ingredients
               </h2>
-              <p className="text-gray-300 text-sm mb-4">
+              <p className="text-gray-300 text-sm">
                 Take a photo of the toothpaste ingredients
               </p>
-              
-              {/* Mobile indicator */}
-              {isMobile && (
-                <div className="flex items-center justify-center space-x-2 mb-4">
-                  <Smartphone className="text-green-400" size={16} />
-                  <span className="text-green-400 text-sm">Mobile device detected</span>
-                </div>
-              )}
             </div>
 
-            <div className="space-y-4">
-              {/* Camera Button */}
+            <div className="space-y-4 w-full max-w-sm">
               <button
                 onClick={openCamera}
-                className="w-full bg-blue-600 hover:bg-blue-700 text-white py-4 px-6 rounded-lg flex items-center justify-center space-x-3 font-semibold transition-colors"
+                className="w-full bg-blue-600 hover:bg-blue-700 text-white py-4 px-6 rounded-lg flex items-center justify-center space-x-3 font-semibold"
               >
                 <Camera size={24} />
-                <span>{isMobile ? 'Open Camera' : 'Take Photo'}</span>
+                <span>Open Camera</span>
               </button>
 
-              {/* Gallery Button */}
               <button
-                onClick={openGallery}
-                className="w-full bg-white/20 hover:bg-white/30 text-white py-4 px-6 rounded-lg flex items-center justify-center space-x-3 font-semibold transition-colors"
+                onClick={() => {
+                  if (fileInputRef.current) {
+                    fileInputRef.current.removeAttribute('capture')
+                    fileInputRef.current.setAttribute('accept', 'image/*')
+                    fileInputRef.current.click()
+                  }
+                }}
+                className="w-full bg-white/20 text-white py-4 px-6 rounded-lg flex items-center justify-center space-x-3 font-semibold"
               >
                 <Image size={24} />
                 <span>Choose from Gallery</span>
               </button>
-            </div>
-
-            {/* Instructions */}
-            <div className="mt-8 bg-white/10 backdrop-blur-sm p-4 rounded-lg">
-              <h3 className="text-white font-medium mb-2 text-sm">📱 Camera Tips:</h3>
-              <ul className="text-white/80 text-xs space-y-1 text-left">
-                <li>• Make sure you're using a mobile device</li>
-                <li>• Allow camera permissions when prompted</li>
-                <li>• Point camera at ingredients list</li>
-                <li>• Ensure good lighting and focus</li>
-                {!isMobile && (
-                  <li className="text-yellow-300">• Camera works best on mobile devices</li>
-                )}
-              </ul>
             </div>
           </div>
         )}
