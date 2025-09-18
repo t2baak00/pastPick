@@ -10,7 +10,7 @@ export const ThemeProvider = ({ children }) => {
 
   useEffect(() => {
     // Load saved theme from localStorage
-    const savedTheme = localStorage.getItem('pastpick-theme')
+    const savedTheme = localStorage.getItem('pastepick-theme')
     if (savedTheme) {
       setTheme(savedTheme)
     }
@@ -51,7 +51,7 @@ export const ThemeProvider = ({ children }) => {
 
   const changeTheme = (newTheme) => {
     setTheme(newTheme)
-    localStorage.setItem('pastpick-theme', newTheme)
+    localStorage.setItem('pastepick-theme', newTheme)
   }
 
   const toggleTheme = () => {

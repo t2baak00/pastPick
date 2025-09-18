@@ -190,15 +190,15 @@ export function CompactLanguageSelector() {
   )
 }
 
-// Settings page version with full details
+// Settings page version with full details - ALWAYS WHITE THEME
 export function DetailedLanguageSelector() {
   const { language, changeLanguage, t, getAvailableLanguages } = useLanguage()
-  const { isDark } = useTheme()
+  // Remove useTheme - always use light theme
   const availableLanguages = getAvailableLanguages()
 
   return (
-    <div className={`p-4 rounded-lg border ${isDark ? 'bg-gray-800 border-gray-700' : 'bg-white border-gray-200'}`}>
-      <h3 className={`font-semibold mb-3 ${isDark ? 'text-white' : 'text-gray-900'}`}>
+    <div className="p-4 rounded-lg border bg-white border-gray-200">
+      <h3 className="font-semibold mb-3 text-gray-900">
         {t('language')}
       </h3>
       
@@ -210,12 +210,8 @@ export function DetailedLanguageSelector() {
             className={`
               w-full p-3 rounded-lg border text-left transition-all
               ${language === lang.code
-                ? isDark 
-                  ? 'border-blue-500 bg-blue-500/10 text-blue-400' 
-                  : 'border-blue-500 bg-blue-50 text-blue-600'
-                : isDark
-                  ? 'border-gray-600 hover:border-gray-500 text-white hover:bg-gray-700'
-                  : 'border-gray-300 hover:border-gray-400 text-gray-900 hover:bg-gray-50'
+                ? 'border-blue-500 bg-blue-50 text-blue-600'
+                : 'border-gray-300 hover:border-gray-400 text-gray-900 hover:bg-gray-50'
               }
             `}
           >
@@ -223,23 +219,21 @@ export function DetailedLanguageSelector() {
               <div>
                 <div className="font-medium">{lang.nativeName}</div>
                 <div className={`text-sm ${
-                  language === lang.code
-                    ? isDark ? 'text-blue-300' : 'text-blue-600'
-                    : isDark ? 'text-gray-400' : 'text-gray-500'
+                  language === lang.code ? 'text-blue-600' : 'text-gray-500'
                 }`}>
                   {lang.name}
                 </div>
               </div>
               
               {language === lang.code && (
-                <div className={`w-2 h-2 rounded-full ${isDark ? 'bg-blue-400' : 'bg-blue-600'}`} />
+                <div className="w-2 h-2 rounded-full bg-blue-600" />
               )}
             </div>
           </button>
         ))}
       </div>
       
-      <div className={`mt-3 text-xs ${isDark ? 'text-gray-400' : 'text-gray-500'}`}>
+      <div className="mt-3 text-xs text-gray-500">
         {t('changeLanguage')} • {t('currentLanguage')}: {availableLanguages.find(l => l.code === language)?.nativeName}
       </div>
     </div>

@@ -8,7 +8,7 @@ const LanguageContext = createContext()
 const translations = {
   en: {
     // App Name & Branding
-    appName: 'PastPick',
+    appName: 'PastePick',
     appTagline: 'Your smart companion for analyzing toothpaste ingredients',
     
     // Navigation
@@ -202,7 +202,7 @@ const translations = {
   
   fi: {
     // App Name & Branding
-    appName: 'PastPick',
+    appName: 'PastePick',
     appTagline: 'Älykäs kumppanisi hammastahnien ainesosien analysointiin',
     
     // Navigation
@@ -459,7 +459,7 @@ export const LanguageProvider = ({ children }) => {
 
   useEffect(() => {
     // Load saved language from localStorage
-    const savedLanguage = localStorage.getItem('pastpick-language')
+    const savedLanguage = localStorage.getItem('pastepick-language')
     if (savedLanguage && translations[savedLanguage]) {
       setLanguage(savedLanguage)
     } else {
@@ -474,7 +474,7 @@ export const LanguageProvider = ({ children }) => {
   const changeLanguage = (lang) => {
     if (translations[lang]) {
       setLanguage(lang)
-      localStorage.setItem('pastpick-language', lang)
+      localStorage.setItem('pastepick-language', lang)
     }
   }
 
