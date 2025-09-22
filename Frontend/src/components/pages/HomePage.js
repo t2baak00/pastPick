@@ -12,9 +12,10 @@ export default function HomePage({ onProductScanned, onStartCamera }) {
           <div className="bg-blue-600 p-2 rounded-xl mr-3">
             <Sparkles className="text-white" size={24} />
           </div>
-          <h1 className="text-3xl font-bold text-gray-900">
-            {t('appName').slice(0, 4)}<span className="text-blue-600">{t('appName').slice(4)}</span>
-          </h1>
+          <h1 className="text-3xl font-bold">
+              <span className="text-black">Paste</span>
+             <span className="text-blue-600">Pick</span>
+        </h1>
         </div>
         <p className="text-gray-600 text-sm max-w-sm mx-auto">
           {t('appTagline')}
