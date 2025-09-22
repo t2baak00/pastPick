@@ -8,12 +8,14 @@ import ScanPage from '../components/pages/ScanPage'
 import RecentPage from '../components/pages/RecentPage'
 import SettingsPage from '../components/pages/SettingsPage'
 import ProductPage from '../components/pages/ProductPage'
-import CameraScanner from '../components/CameraScanner'
+import SimpleCameraScanner from '../components/CameraScanner'
+import { useTheme } from '../contexts/ThemeContext'
 
 export default function Home() {
   const [activeTab, setActiveTab] = useState('home')
   const [currentView, setCurrentView] = useState('main') // 'main', 'product', or 'camera'
   const [scannedProduct, setScannedProduct] = useState(null)
+  const { isDark } = useTheme()
 
   const handleProductScanned = (product = null) => {
     setScannedProduct(product)
@@ -64,14 +66,16 @@ export default function Home() {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 to-green-50">
+    <div className={`min-h-screen transition-colors duration-300 ${
+      isDark ? 'bg-gray-900' : 'bg-gradient-to-br from-blue-50 to-green-50'
+    }`}>
       {currentView === 'product' ? (
         <ProductPage 
           product={scannedProduct} 
           onBack={handleBackToMain} 
         />
       ) : currentView === 'camera' ? (
-        <CameraScanner 
+        <SimpleCameraScanner 
           onClose={handleCameraClose}
           onCapture={handleCameraCapture}
         />
